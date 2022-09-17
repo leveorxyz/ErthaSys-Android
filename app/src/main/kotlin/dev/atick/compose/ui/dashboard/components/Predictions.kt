@@ -10,13 +10,14 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.atick.network.data.SegmentationResult
 
 @Composable
-fun Predictions() {
+fun Predictions(segmentationResult: SegmentationResult) {
     return Column(Modifier.fillMaxWidth()) {
         Prediction(
             label = "Vegetation",
-            amount = "5.89%",
+            amount = segmentationResult.vegetation,
             icon=Icons.Filled.Forest,
             color = MaterialColor.Green900,
             bgColor = MaterialColor.Green100
@@ -30,25 +31,25 @@ fun Predictions() {
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(
             label = "Land",
-            amount = "5.89%",
+            amount = segmentationResult.land,
             icon=Icons.Filled.Texture,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(
             label = "Road",
-            amount = "5.89%",
+            amount = segmentationResult.road,
             icon=Icons.Filled.AddRoad,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(
             label = "Building",
-            amount = "5.89%",
+            amount = segmentationResult.building,
             icon=Icons.Filled.Domain,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(
             label = "Unlabeled",
-            amount = "5.89%",
+            amount = segmentationResult.unlabeled,
             icon=Icons.Filled.Circle,
         )
         Spacer(modifier = Modifier.height(8.dp))
