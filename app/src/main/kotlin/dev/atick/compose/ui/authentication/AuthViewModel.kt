@@ -10,6 +10,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor() : ViewModel() {
     val loginProgress = mutableStateOf(false)
+    val name = mutableStateOf("")
     val username = mutableStateOf("")
     val password = mutableStateOf("")
 

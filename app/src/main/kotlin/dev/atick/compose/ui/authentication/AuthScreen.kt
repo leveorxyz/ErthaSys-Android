@@ -1,5 +1,6 @@
 package dev.atick.compose.ui.authentication
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -10,9 +11,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +33,8 @@ fun AuthScreen(
     onLoginClick: () -> Unit,
     viewModel: AuthViewModel = viewModel()
 ) {
+    var newUser by remember { mutableStateOf(false) }
+
     return Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -48,22 +52,35 @@ fun AuthScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                text = "Login",
+                text = if (newUser) "Sign Up" else "Login",
                 color = MaterialTheme.colors.onSurface,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
+
+            AnimatedVisibility(visible = newUser) {
+                InputField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = viewModel.name.value,
+                    labelResourceId = R.string.full_name,
+                    leadingIcon = Icons.Filled.Person,
+                    onValueChange = {
+                        viewModel.username.value = it
+                    }
+                )
+            }
+
             InputField(
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.username.value,
                 labelResourceId = R.string.username,
-                leadingIcon = Icons.Filled.Person,
+                leadingIcon = Icons.Filled.Email,
                 onValueChange = {
                     viewModel.username.value = it
                 }
             )
-            Spacer(modifier = Modifier.height(16.dp))
+
             InputField(
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.password.value,
@@ -84,21 +101,21 @@ fun AuthScreen(
                     .height(48.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(text = stringResource(R.string.login))
+                Text(text = if (newUser) stringResource(R.string.sign_up) else
+                    stringResource(R.string.login))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedButton(
-                onClick = {
-                    onLoginClick()
-                },
+                onClick = { newUser = !newUser },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(text = stringResource(R.string.sign_up))
+                Text(text = if (newUser) stringResource(R.string.login) else
+                    stringResource(R.string.sign_up))
             }
             Spacer(modifier = Modifier.fillMaxHeight(0.3F))
         }
@@ -114,7 +131,7 @@ fun AuthScreen(
                 painter = painterResource(id = R.drawable.leveor),
                 contentDescription = "ErthaSys Logo"
             )
-            
+
             Spacer(modifier = Modifier.width(8.dp))
 
             Text(
