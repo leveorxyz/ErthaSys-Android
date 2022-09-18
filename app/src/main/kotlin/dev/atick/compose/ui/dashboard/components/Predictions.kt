@@ -17,7 +17,7 @@ fun Predictions(segmentationResult: SegmentationResult) {
     return Column(Modifier.fillMaxWidth()) {
         Prediction(
             label = "Vegetation",
-            amount = segmentationResult.vegetation,
+            amount = segmentationResult.water,
             icon=Icons.Filled.Forest,
             color = MaterialColor.Green900,
             bgColor = MaterialColor.Green100
@@ -25,14 +25,14 @@ fun Predictions(segmentationResult: SegmentationResult) {
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(
             label = "Water",
-            amount = "5.89%",
+            amount = segmentationResult.vegetation,
             icon=Icons.Filled.Water,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(
             label = "Land",
             amount = segmentationResult.land,
-            icon=Icons.Filled.Texture,
+            icon=Icons.Filled.Grass,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Prediction(

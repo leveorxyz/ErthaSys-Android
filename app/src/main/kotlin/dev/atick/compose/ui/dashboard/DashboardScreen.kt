@@ -23,8 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import dev.atick.compose.R
 import dev.atick.compose.ui.common.components.TopBar
+import dev.atick.compose.ui.dashboard.components.PieChart
 import dev.atick.compose.ui.dashboard.components.Predictions
 
 @Suppress("DEPRECATION")
@@ -32,11 +36,10 @@ import dev.atick.compose.ui.dashboard.components.Predictions
 fun DashboardScreen(
     viewModel: DashboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-
-    val loading by viewModel.loading
     var inputImage by viewModel.inputImage
     val outputImage by viewModel.outputImage
     val segmentationResult by viewModel.segmentationResult
+    val pieChartDataset by viewModel.pieChartDataset
     val context = LocalContext.current
 
     val scaffoldState = rememberScaffoldState()
@@ -62,10 +65,19 @@ fun DashboardScreen(
 
     return Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { TopBar(title = "Dashboard", onRefreshClick = {}, onMenuClick = {}) },
+        topBar = {
+            TopBar(
+                title = "Dashboard",
+                onRefreshClick = { viewModel.resetEverything() },
+                onMenuClick = {})
+        },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
-            FloatingActionButton(onClick = { launcher.launch(arrayOf("image/*")) }) {
+            FloatingActionButton(onClick = {
+                launcher.launch(arrayOf("image/*"))
+                viewModel.resetEverything()
+            }
+            ) {
                 Icon(imageVector = Icons.Filled.Upload, contentDescription = "Upload")
             }
         },
@@ -78,8 +90,12 @@ fun DashboardScreen(
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(text = loading)
-
+                AnimatedVisibility(visible = inputImage == null) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(painter = painterResource(id = R.drawable.upload), contentDescription = "Upload")
+                        Text(text = "Please Select an Image from the Gallery by Clicking the Button Below")
+                    }
+                }
                 AnimatedVisibility(
                     modifier = Modifier.fillMaxWidth(),
                     visible = inputImage != null
@@ -99,7 +115,7 @@ fun DashboardScreen(
                                 bitmap = it.asImageBitmap(),
                                 contentDescription = "input",
                                 contentScale = ContentScale.FillWidth,
-                                alpha = 0.5F
+                                alpha = 0.3F
                             )
                         }
                     }
@@ -108,7 +124,18 @@ fun DashboardScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 AnimatedVisibility(visible = outputImage != null) {
-                    Predictions(segmentationResult=segmentationResult)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "Analysis Results", fontSize = 20.sp)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        PieChart(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(400.dp),
+                            dataset = pieChartDataset
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Predictions(segmentationResult = segmentationResult)
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(64.dp))
