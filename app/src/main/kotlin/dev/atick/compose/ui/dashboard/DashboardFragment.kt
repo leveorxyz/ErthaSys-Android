@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import dev.atick.compose.ui.common.components.LoadingAnimation
 import dev.atick.core.ui.BaseComposeFragment
+import dev.atick.core.utils.extensions.observeEvent
+import dev.atick.core.utils.extensions.showToast
 
 @AndroidEntryPoint
 class DashboardFragment : BaseComposeFragment() {
@@ -27,6 +29,13 @@ class DashboardFragment : BaseComposeFragment() {
             AnimatedVisibility(visible = viewModel.loading) {
                 LoadingAnimation()
             }
+        }
+    }
+
+    override fun observeStates() {
+        super.observeStates()
+        observeEvent(viewModel.toast) {
+            requireContext().showToast(it)
         }
     }
 }

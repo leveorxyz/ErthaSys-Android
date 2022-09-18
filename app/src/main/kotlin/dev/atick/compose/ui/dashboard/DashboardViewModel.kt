@@ -4,11 +4,13 @@ import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.atick.core.utils.Event
 import dev.atick.network.data.SegmentationResult
 import dev.atick.network.repository.ErthaSysRepository
 import kotlinx.coroutines.launch
@@ -23,25 +25,30 @@ class DashboardViewModel @Inject constructor(
     val outputImage = mutableStateOf<Bitmap?>(null)
     val segmentationResult = mutableStateOf(SegmentationResult(null))
     val pieChartDataset = mutableStateOf(PieDataSet(listOf(), ""))
+    val toast = MutableLiveData<Event<String>>()
 
     fun segmentImage(image: Bitmap) {
         viewModelScope.launch {
             loading = true
-            val result = erthaSysRepository.getSegmentationResults(image)
-            result.image?.let { segmentedImage ->
-                outputImage.value = segmentedImage
-                segmentationResult.value = result
-                pieChartDataset.value = PieDataSet(
-                    listOf(
-                        PieEntry(getNumericValue(result.water), "Vegetation"),
-                        PieEntry(getNumericValue(result.land), "Land"),
-                        PieEntry(getNumericValue(result.vegetation), "Water"),
-                        PieEntry(getNumericValue(result.road), "Road"),
-                        PieEntry(getNumericValue(result.building), "Building"),
-                        // PieEntry(getNumericValue(result.unlabeled), ""),
-                    ),
-                    ""
-                )
+            try {
+                val result = erthaSysRepository.getSegmentationResults(image)
+                result.image?.let { segmentedImage ->
+                    outputImage.value = segmentedImage
+                    segmentationResult.value = result
+                    pieChartDataset.value = PieDataSet(
+                        listOf(
+                            PieEntry(getNumericValue(result.water), "Vegetation"),
+                            PieEntry(getNumericValue(result.land), "Land"),
+                            PieEntry(getNumericValue(result.vegetation), "Water"),
+                            PieEntry(getNumericValue(result.road), "Road"),
+                            PieEntry(getNumericValue(result.building), "Building"),
+                            // PieEntry(getNumericValue(result.unlabeled), ""),
+                        ),
+                        ""
+                    )
+                }
+            } catch (e: Exception) {
+                toast.postValue(Event("Something Went Wrong!"))
             }
             loading = false
         }
