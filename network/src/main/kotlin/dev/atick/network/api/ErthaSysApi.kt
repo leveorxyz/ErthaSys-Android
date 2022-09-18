@@ -10,6 +10,6 @@ interface ErthaSysApi {
     suspend fun getSegmentationResults(@Body requestBody: RequestBody): ResponseBody
 
     companion object {
-        const val BASE_URL = "http://192.168.1.102:5000/"
+        const val BASE_URL = "http://18.234.128.190/"
     }
 }

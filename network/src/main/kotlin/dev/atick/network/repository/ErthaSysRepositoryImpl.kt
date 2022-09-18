@@ -23,12 +23,12 @@ class ErthaSysRepositoryImpl @Inject constructor(
 
         return SegmentationResult(
             image = response.base64Image?.toBitmap(),
-            vegetation = response.classDistribution?.vegetation,
-            water = response.classDistribution?.water,
-            road = response.classDistribution?.road,
-            building = response.classDistribution?.building,
-            land = response.classDistribution?.land,
-            unlabeled = response.classDistribution?.unlabeled,
+            vegetation = response.classDistribution?.vegetation ?: "0.0%",
+            water = response.classDistribution?.water ?: "0.0%",
+            road = response.classDistribution?.road ?: "0.0%",
+            building = response.classDistribution?.building ?: "0.0%",
+            land = response.classDistribution?.land ?: "0.0%",
+            unlabeled = response.classDistribution?.unlabeled ?: "0.0%",
         )
     }
 }
