@@ -66,7 +66,7 @@ fun AuthScreen(
                     labelResourceId = R.string.full_name,
                     leadingIcon = Icons.Filled.Person,
                     onValueChange = {
-                        viewModel.username.value = it
+                        viewModel.name.value = it
                     }
                 )
             }
