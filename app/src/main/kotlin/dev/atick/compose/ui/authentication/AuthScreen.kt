@@ -30,12 +30,12 @@ import dev.atick.compose.ui.common.components.InputField
 
 @Composable
 fun AuthScreen(
-    onLoginClick: () -> Unit,
+    modifier: Modifier,
     viewModel: AuthViewModel = viewModel()
 ) {
     var newUser by remember { mutableStateOf(false) }
 
-    return Box(modifier = Modifier.fillMaxSize()) {
+    return Box(modifier = Modifier.fillMaxSize().then(modifier)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -94,7 +94,7 @@ fun AuthScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = {
-                    onLoginClick()
+                    viewModel.login()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
