@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.atick.compose.R
@@ -34,6 +36,7 @@ import dev.atick.compose.ui.dashboard.components.Predictions
 @Suppress("DEPRECATION")
 @Composable
 fun DashboardScreen(
+    modifier: Modifier = Modifier,
     viewModel: DashboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     var inputImage by viewModel.inputImage
@@ -64,6 +67,7 @@ fun DashboardScreen(
     }
 
     return Scaffold(
+        modifier = Modifier.fillMaxSize().then(modifier),
         scaffoldState = scaffoldState,
         topBar = {
             TopBar(
@@ -92,8 +96,14 @@ fun DashboardScreen(
             ) {
                 AnimatedVisibility(visible = inputImage == null) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(painter = painterResource(id = R.drawable.upload), contentDescription = "Upload")
-                        Text(text = "Please Select an Image from the Gallery by Clicking the Button Below")
+                        Image(
+                            painter = painterResource(id = R.drawable.upload),
+                            contentDescription = "Upload"
+                        )
+                        Text(
+                            text = stringResource(R.string.upload_image),
+                            textAlign = TextAlign.Center
+                        )
                     }
                 }
                 AnimatedVisibility(

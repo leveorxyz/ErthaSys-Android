@@ -1,7 +1,9 @@
 package dev.atick.compose.ui.dashboard
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mikephil.charting.data.PieDataSet
@@ -16,6 +18,7 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val erthaSysRepository: ErthaSysRepository
 ) : ViewModel() {
+    var loading by mutableStateOf(false)
     val inputImage = mutableStateOf<Bitmap?>(null)
     val outputImage = mutableStateOf<Bitmap?>(null)
     val segmentationResult = mutableStateOf(SegmentationResult(null))
@@ -23,6 +26,7 @@ class DashboardViewModel @Inject constructor(
 
     fun segmentImage(image: Bitmap) {
         viewModelScope.launch {
+            loading = true
             val result = erthaSysRepository.getSegmentationResults(image)
             result.image?.let { segmentedImage ->
                 outputImage.value = segmentedImage
@@ -39,6 +43,7 @@ class DashboardViewModel @Inject constructor(
                     ""
                 )
             }
+            loading = false
         }
     }
 

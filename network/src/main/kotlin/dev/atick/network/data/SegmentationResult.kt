@@ -4,10 +4,10 @@ import android.graphics.Bitmap
 
 data class SegmentationResult(
     val image: Bitmap?,
-    val vegetation: String = "unknown",
-    val water: String = "unknown",
-    val building: String = "unknown",
-    val road: String = "unknown",
-    val land: String = "unknown",
-    val unlabeled: String = "unknown",
+    val vegetation: String = "0.0%",
+    val water: String = "0.0%",
+    val building: String = "0.0%",
+    val road: String = "0.0%",
+    val land: String = "0.0%",
+    val unlabeled: String = "0.0%",
 )
