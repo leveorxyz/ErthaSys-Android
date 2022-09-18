@@ -10,7 +10,7 @@ fun Bitmap.toBase64(): String {
     val byteArrayOutputStream = ByteArrayOutputStream()
     this.compress(
         Bitmap.CompressFormat.JPEG,
-        100,
+        70,
         byteArrayOutputStream
     )
     val byteArray = byteArrayOutputStream.toByteArray()
