@@ -1,8 +1,11 @@
-# Jetpack-Compose-Starter    <img src="https://app.travis-ci.com/atick-faisal/Jetpack-Compose-Starter.svg?token=uzupN2oHSbDhWyAsMaJM&branch=main"/>
-Starter code for Android Kotlin Project with Jetpack Compose.
+# ErthaSys    <img src="https://app.travis-ci.com/atick-faisal/Jetpack-Compose-Starter.svg?token=uzupN2oHSbDhWyAsMaJM&branch=main"/>
 
 <p align="center">
-  <img src="technologies.png"/>
+  <img src="https://github.com/leveorxyz/ErthaSys-Android/blob/main/app/src/main/res/drawable/logo.png" width="400"/>
+</p>
+
+<p align="center">
+  <img src="erthasys-app.png" width="600"/>
 </p>
 
 <br>
