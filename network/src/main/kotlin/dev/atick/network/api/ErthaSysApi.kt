@@ -7,9 +7,11 @@ import retrofit2.http.POST
 
 interface ErthaSysApi {
     @POST("/erthasys")
-    suspend fun getSegmentationResults(@Body requestBody: RequestBody): ResponseBody
+    suspend fun getSegmentationResults(
+        @Body requestBody: RequestBody
+    ): ResponseBody
 
     companion object {
-        const val BASE_URL = "http://18.234.128.190/"
+        const val BASE_URL = "https://erthasys.leveor.xyz/"
     }
 }
